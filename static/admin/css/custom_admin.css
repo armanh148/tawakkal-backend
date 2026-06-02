@@ -1,0 +1,419 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+    --gold: #e6a13b;
+    --gold-dark: #b87b2e;
+    --charcoal: #0a0a0a;
+    --card-bg: #1a1a1a;
+    --border-color: #2a2a2a;
+    --accent: #e6a13b;
+}
+
+body {
+    background-color: var(--charcoal) !important;
+    font-family: 'Montserrat', sans-serif !important;
+    color: #e0e0e0 !important;
+}
+
+.main-sidebar, .main-header {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-text {
+    font-family: 'Playfair Display', serif !important;
+}
+
+/* Sidebar Styling */
+.main-sidebar {
+    background-color: var(--charcoal) !important;
+    border-right: 1px solid var(--border-color) !important;
+}
+
+.nav-sidebar .nav-link.active {
+    background-color: var(--gold) !important;
+    color: #000 !important;
+    font-weight: 700 !important;
+    border-radius: 8px !important;
+    margin-bottom: 2px !important;
+}
+
+.nav-sidebar .nav-link:hover {
+    background-color: rgba(230, 161, 59, 0.1) !important;
+    color: var(--gold) !important;
+}
+
+.brand-link {
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 1.5rem 1rem !important;
+}
+
+.brand-link .brand-text {
+    display: none !important;
+}
+
+.brand-link .brand-image {
+    margin-top: -4px !important;
+    max-height: 45px !important;
+}
+
+/* Header/Navbar */
+.main-header {
+    background-color: var(--charcoal) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 0 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 70px !important;
+}
+
+.main-header .navbar {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-left: 0 !important;
+    border: none !important;
+    height: 100% !important;
+}
+
+.brand-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 2rem 0 0 !important;
+    border: none !important;
+    height: 100% !important;
+    background: transparent !important;
+    line-height: 1 !important;
+}
+
+.brand-link .brand-image {
+    max-height: 38px !important;
+    width: auto !important;
+    margin: 0 !important;
+    opacity: 1 !important;
+    vertical-align: middle !important;
+    float: none !important;
+}
+
+.navbar-nav {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #888 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 1.2px !important;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.2s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: var(--gold) !important;
+}
+
+/* Search Bar Alignment */
+.form-inline {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.form-inline .input-group {
+    background-color: #111 !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--border-color) !important;
+    overflow: hidden !important;
+    margin-left: 0.5rem !important;
+    height: 36px !important;
+}
+
+.form-inline .form-control-navbar {
+    background-color: transparent !important;
+    border: none !important;
+    color: #fff !important;
+    font-size: 0.8rem !important;
+}
+
+.input-group-append .btn-navbar {
+    background: transparent !important;
+    border: none !important;
+    color: #555 !important;
+}
+
+/* Buttons */
+.btn-warning, .btn-primary, .btn-success, .default {
+    background: linear-gradient(135deg, #e6a13b 0%, #b87b2e 100%) !important;
+    border: none !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    border-radius: 12px !important;
+    padding: 10px 24px !important;
+    font-size: 0.75rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-warning:hover, .btn-primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(230, 161, 59, 0.4) !important;
+    color: #000 !important;
+}
+
+/* Action Buttons (Change/Add) */
+.btn-info {
+    background: #222 !important;
+    border: 1px solid #333 !important;
+    color: var(--gold) !important;
+    border-radius: 8px !important;
+}
+
+.btn-info:hover {
+    background: var(--gold) !important;
+    color: #000 !important;
+}
+
+/* Dashboard Cards */
+.card {
+    background-color: var(--card-bg) !important;
+    border-radius: 24px !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.4) !important;
+    margin-bottom: 2.5rem !important;
+    overflow: hidden !important;
+}
+
+.card-header {
+    background-color: rgba(255,255,255,0.03) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 1.75rem 2rem !important;
+}
+
+.card-title {
+    color: #fff !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+}
+
+/* Tables */
+.table {
+    color: #bbb !important;
+}
+
+.table thead th {
+    background-color: rgba(0,0,0,0.2) !important;
+    text-transform: uppercase !important;
+    font-size: 0.65rem !important;
+    letter-spacing: 2px !important;
+    color: #555 !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    padding: 1.25rem !important;
+}
+
+.table td {
+    border-top: 1px solid var(--border-color) !important;
+    padding: 1.25rem !important;
+    vertical-align: middle !important;
+}
+
+.table tr:hover {
+    background-color: rgba(255,255,255,0.01) !important;
+}
+
+/* Forms */
+.form-control, select {
+    background-color: #0a0a0a !important;
+    border: 1px solid var(--border-color) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    height: auto !important;
+}
+
+.form-control:focus {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 0.2rem rgba(230, 161, 59, 0.1) !important;
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    background: transparent !important;
+    padding-left: 0 !important;
+}
+
+.breadcrumb-item a {
+    color: var(--gold) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 1px !important;
+}
+
+.breadcrumb-item.active {
+    color: #555 !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+}
+
+/* Content Header */
+.content-header h1 {
+    color: #fff !important;
+    font-weight: 900 !important;
+    font-size: 2.5rem !important;
+    letter-spacing: -1.5px !important;
+}
+
+/* Success Messages */
+.alert-success {
+    background: rgba(16, 185, 129, 0.1) !important;
+    border: 1px solid rgba(16, 185, 129, 0.2) !important;
+    color: #10b981 !important;
+    border-radius: 16px !important;
+}
+
+/* Stats/Info Boxes */
+.info-box {
+    background: var(--card-bg) !important;
+    border-radius: 20px !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.info-box .info-box-icon {
+    border-radius: 16px !important;
+    background: rgba(230, 161, 59, 0.1) !important;
+    color: var(--gold) !important;
+}
+
+/* Custom horizontal scroll for tables on small screens */
+.table-responsive {
+    border: none !important;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--charcoal);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-dark);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 0 0.5rem !important;
+        height: auto !important;
+        min-height: 60px !important;
+    }
+
+    .main-header .navbar {
+        flex-wrap: wrap !important;
+        height: auto !important;
+        padding: 0.5rem 0 !important;
+    }
+
+    .brand-link {
+        margin: 0 !important;
+        padding: 0.5rem !important;
+    }
+
+    .brand-link .brand-image {
+        max-height: 30px !important;
+    }
+
+    .navbar-nav {
+        width: 100% !important;
+        justify-content: space-around !important;
+        margin-top: 0.5rem !important;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+        padding: 0.5rem 0.4rem !important;
+        font-size: 0.6rem !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    .content-header h1 {
+        font-size: 1.5rem !important;
+        letter-spacing: -0.5px !important;
+        text-align: center !important;
+    }
+
+    .card-header {
+        padding: 1rem !important;
+    }
+
+    .card-title {
+        font-size: 1rem !important;
+    }
+
+    .btn-warning, .btn-primary, .btn-success, .default {
+        padding: 8px 16px !important;
+        font-size: 0.65rem !important;
+        width: 100% !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .form-inline .input-group {
+        width: 100% !important;
+        margin: 0.5rem 0 !important;
+    }
+
+    /* Table adjustments for mobile */
+    .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .table thead th {
+        padding: 0.75rem 0.5rem !important;
+        font-size: 0.55rem !important;
+    }
+
+    .table td {
+        padding: 0.75rem 0.5rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Sidebar adjustments */
+    .main-sidebar {
+        width: 250px !important;
+    }
+
+    .sidebar-mini.sidebar-collapse .main-sidebar {
+        width: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-nav {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+        width: 100% !important;
+        border-bottom: 1px solid var(--border-color) !important;
+    }
+}
+
+/* Hide Admin Footer */
+.main-footer {
+    display: none !important;
+}

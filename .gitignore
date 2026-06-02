@@ -1,0 +1,38 @@
+# Python/Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+
+# Logs
+*.log
+
+# Environments
+.env
+.env.local
+
+# OS/Editors
+.DS_Store
+.idea/
+.vscode/
+.coder/
+
+# Frontend directories and files (ignored on backend branch)
+node_modules/
+dist/
+dist-ssr/
+.vite/
+package.json
+package-lock.json
+vite.config.js
+tailwind.config.js
+postcss.config.js
+eslint.config.js
+index.html
+src/
+public/
+dist.zip

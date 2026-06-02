@@ -1,0 +1,42 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module">
+        <h2 style="margin-bottom: 20px;">🪄 Smart AI Add</h2>
+        <p>Paste any product description, specification list, or even a messy copy-paste from a website. Our AI will analyze it and fill the form for you.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div style="margin: 20px 0;">
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="errornote">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="submit-row">
+                <input type="submit" value="Analyze with AI ✨" class="default" style="padding: 10px 20px; font-size: 16px;">
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    textarea {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        font-family: inherit;
+        font-size: 14px;
+        background: #f9f9f9;
+    }
+    textarea:focus {
+        border-color: #79aec8;
+        outline: none;
+        background: #fff;
+    }
+</style>
+{% endblock %}
