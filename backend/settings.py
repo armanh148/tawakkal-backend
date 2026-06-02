@@ -64,7 +64,7 @@ JAZZMIN_SETTINGS = {
         {"name": "Staff", "url": "admin:auth_user_changelist"},
         {"name": "Live Website", "url": "http://localhost:5173", "new_window": True},
     ],
-    "show_sidebar": False,
+    "show_sidebar": True,
     "navigation_expanded": False,
     "hide_apps": [],
     "hide_models": [],

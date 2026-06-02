@@ -291,50 +291,260 @@ h1, h2, h3, h4, h5, h6, .brand-text {
     color: var(--gold) !important;
 }
 
-/* Custom horizontal scroll for tables on small screens */
-.table-responsive {
-    border: none !important;
-}
-
+/* Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
-    height: 8px;
 }
-
 ::-webkit-scrollbar-track {
     background: var(--charcoal);
 }
-
 ::-webkit-scrollbar-thumb {
     background: #222;
     border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--gold-dark);
+/* Sidebar toggle button (Hamburger) */
+[data-widget="pushmenu"] {
+    color: var(--gold) !important;
+    font-size: 1.2rem !important;
+    margin-right: 15px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding-left: 0.5rem !important;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
+[data-widget="pushmenu"]:hover {
+    color: #fff !important;
+}
+
+/* Ensure hamburger is visible on all screen sizes */
+.main-header .nav-link[data-widget="pushmenu"] {
+    display: block !important;
+}
+
+/* --- LOGIN PAGE UI FIXES --- */
+body.login-page {
+    background-color: #1a1a1a !important;
+    overflow: hidden !important;
+}
+
+/* Hide everything except the central content */
+body.login-page .main-header,
+body.login-page .main-sidebar,
+body.login-page .main-footer,
+body.login-page .content-header,
+body.login-page .breadcrumbs,
+body.login-page #header,
+body.login-page #footer {
+    display: none !important;
+}
+
+/* Reset layout constraints */
+body.login-page .wrapper,
+body.login-page .content-wrapper {
+    margin-left: 0 !important;
+    background-color: #1a1a1a !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+}
+
+body.login-page .content {
+    width: 100% !important;
+    max-width: 450px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    margin: 0 auto !important;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.login-logo-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.logo-circle {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 15px 30px rgba(255, 78, 80, 0.3);
+}
+
+.logo-circle img {
+    width: 55px;
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+
+.login-title {
+    color: #fff !important;
+    text-align: center;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    margin-bottom: 40px !important;
+    font-family: 'Montserrat', sans-serif !important;
+    letter-spacing: -0.5px;
+}
+
+.login-form-card {
+    background: transparent;
+}
+
+/* Floating Label Styling */
+.form-group.floating-label {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.floating-label input {
+    width: 100%;
+    background: #111 !important;
+    border: 1px solid #333 !important;
+    border-radius: 12px !important;
+    color: #fff !important;
+    padding: 28px 18px 10px 18px !important;
+    font-size: 16px !important;
+    outline: none !important;
+    transition: all 0.3s ease;
+    height: 70px !important;
+}
+
+/* Fix Browser Autofill Background */
+.floating-label input:-webkit-autofill,
+.floating-label input:-webkit-autofill:hover, 
+.floating-label input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #fff !important;
+    -webkit-box-shadow: 0 0 0px 1000px #111 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.floating-label input:focus {
+    border-color: #ff4e50 !important;
+    background: #000 !important;
+}
+
+.floating-label label {
+    position: absolute;
+    top: 24px;
+    left: 18px;
+    color: #888;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.floating-label input:focus ~ label,
+.floating-label input:not(:placeholder-shown) ~ label {
+    top: 10px;
+    font-size: 11px;
+    color: #ff4e50;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.password-group {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 20px;
+    top: 26px;
+    color: #555;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.toggle-password:hover {
+    color: #ff4e50;
+}
+
+.forgot-password-container {
+    text-align: left;
+    margin-bottom: 30px;
+    margin-top: -10px;
+}
+
+.forgot-link {
+    color: #ff4e50 !important;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.forgot-link:hover {
+    opacity: 0.8;
+}
+
+.btn-login {
+    width: 100%;
+    background: #ff4e50 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 18px !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    box-shadow: 0 10px 20px rgba(255, 78, 80, 0.2) !important;
+}
+
+.btn-login:hover {
+    background: #ff3336 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(255, 78, 80, 0.4) !important;
+}
+
+/* --- MOBILE RESPONSIVENESS REFINEMENTS --- */
+@media (max-width: 991px) {
     .main-header {
-        padding: 0 0.5rem !important;
+        padding: 0 1rem !important;
+    }
+    
+    .content-header h1 {
+        font-size: 1.75rem !important;
+        text-align: left !important;
+    }
+
+    /* Stack info boxes */
+    .row > [class*="col-"] {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Navbar adjustments */
+    .main-header {
         height: auto !important;
         min-height: 60px !important;
     }
 
     .main-header .navbar {
+        padding: 0 !important;
         flex-wrap: wrap !important;
-        height: auto !important;
-        padding: 0.5rem 0 !important;
-    }
-
-    .brand-link {
-        margin: 0 !important;
-        padding: 0.5rem !important;
-    }
-
-    .brand-link .brand-image {
-        max-height: 30px !important;
+        justify-content: center !important;
     }
 
     .navbar-nav {
@@ -343,77 +553,83 @@ h1, h2, h3, h4, h5, h6, .brand-text {
         margin-top: 0.5rem !important;
     }
 
-    .navbar-dark .navbar-nav .nav-link {
-        padding: 0.5rem 0.4rem !important;
-        font-size: 0.6rem !important;
-        letter-spacing: 0.5px !important;
+    .navbar-nav .nav-link {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        font-size: 0.65rem !important;
     }
 
-    .content-header h1 {
-        font-size: 1.5rem !important;
-        letter-spacing: -0.5px !important;
-        text-align: center !important;
+    /* Hide search on very small screens to save space */
+    .form-inline {
+        display: none !important;
+    }
+
+    /* Dashboard Cards */
+    .card {
+        border-radius: 16px !important;
     }
 
     .card-header {
-        padding: 1rem !important;
+        padding: 1.25rem !important;
     }
 
     .card-title {
-        font-size: 1rem !important;
+        font-size: 0.9rem !important;
     }
 
-    .btn-warning, .btn-primary, .btn-success, .default {
-        padding: 8px 16px !important;
-        font-size: 0.65rem !important;
-        width: 100% !important;
-        margin-bottom: 0.5rem !important;
-    }
-
-    .form-inline .input-group {
-        width: 100% !important;
-        margin: 0.5rem 0 !important;
-    }
-
-    /* Table adjustments for mobile */
+    /* Table Responsiveness */
     .table-responsive {
+        border-radius: 12px !important;
         overflow-x: auto !important;
+        display: block !important;
+        width: 100% !important;
         -webkit-overflow-scrolling: touch !important;
     }
 
     .table thead th {
-        padding: 0.75rem 0.5rem !important;
-        font-size: 0.55rem !important;
+        white-space: nowrap !important;
+        padding: 1rem 0.75rem !important;
     }
 
     .table td {
-        padding: 0.75rem 0.5rem !important;
-        font-size: 0.75rem !important;
+        padding: 1rem 0.75rem !important;
+        font-size: 0.8rem !important;
+        white-space: nowrap !important;
     }
 
-    /* Sidebar adjustments */
+    /* Fix action buttons in tables */
+    .table .btn {
+        padding: 6px 12px !important;
+        font-size: 0.7rem !important;
+    }
+
+    /* Forms on mobile */
+    .form-control, select {
+        font-size: 14px !important;
+        padding: 10px 14px !important;
+    }
+    
     .main-sidebar {
         width: 250px !important;
-    }
-
-    .sidebar-mini.sidebar-collapse .main-sidebar {
-        width: 0 !important;
     }
 }
 
 @media (max-width: 480px) {
-    .navbar-nav {
-        flex-direction: column !important;
-        align-items: flex-start !important;
+    .content-header h1 {
+        font-size: 1.5rem !important;
     }
 
-    .navbar-dark .navbar-nav .nav-link {
-        width: 100% !important;
-        border-bottom: 1px solid var(--border-color) !important;
+    /* Compact info boxes for mobile */
+    .info-box {
+        min-height: 70px !important;
     }
-}
-
-/* Hide Admin Footer */
-.main-footer {
-    display: none !important;
+    
+    .info-box-icon {
+        width: 50px !important;
+        font-size: 1.25rem !important;
+    }
+    
+    .info-box-content {
+        padding: 5px 10px !important;
+    }
 }

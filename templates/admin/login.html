@@ -1,0 +1,294 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In | Tawakkal Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-orange: #ff4e50;
+            --bg-dark: #121212;
+            --card-bg: #222222;
+            --input-bg: #1a1a1a;
+            --text-white: #ffffff;
+            --text-dim: #888888;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-white);
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .logo-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(255, 78, 80, 0.3);
+        }
+
+        .logo-circle img {
+            width: 45px;
+            height: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 35px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: var(--card-bg);
+            padding: 0 5px;
+            color: var(--text-dim);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 1;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #444;
+            border-radius: 12px;
+            color: var(--text-white);
+            padding: 18px 15px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--brand-orange);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 18px;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 30px;
+            margin-top: -10px;
+        }
+
+        .forgot-password a {
+            color: #ff7070;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .btn-login {
+            width: 100%;
+            background-color: var(--brand-orange);
+            color: var(--text-white);
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            margin-bottom: 25px;
+        }
+
+        .btn-login:hover {
+            background-color: #ff3336;
+            transform: translateY(-1px);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--text-dim);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #333;
+        }
+
+        .divider span {
+            padding: 0 15px;
+        }
+
+        .btn-google {
+            width: 100%;
+            background-color: #1a1a1a;
+            color: var(--text-white);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 25px;
+        }
+
+        .btn-google:hover {
+            background-color: #252525;
+        }
+
+        .btn-google img {
+            width: 18px;
+        }
+
+        .signup-prompt {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .signup-prompt a {
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 700;
+            margin-left: 5px;
+        }
+
+        .error-msg {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        
+        /* Webkit Autofill fix */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus {
+            -webkit-text-fill-color: var(--text-white) !important;
+            -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="logo-section">
+            <div class="logo-circle">
+                <img src="{% static 'img/tawakkal-second-logo.png' %}" alt="Logo">
+            </div>
+        </div>
+        
+        <h2 class="login-title">Log In to your account</h2>
+        
+        <form action="{{ app_path }}" method="post">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+            <div class="error-msg">
+                {% trans "Invalid username or password." %}
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_username">Email</label>
+                <input type="text" name="username" autofocus autocomplete="username" required id="id_username" placeholder="hello.designveli@gmail.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" autocomplete="current-password" required id="id_password">
+                <span class="password-toggle"><i class="far fa-eye-slash"></i></span>
+            </div>
+            
+            <div class="forgot-password">
+                <a href="{% url 'password_reset' %}">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="btn-login">Log In</button>
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <button class="btn-google">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+            Log In with Google
+        </button>
+
+        <p class="signup-prompt">
+            Don't have an account? <a href="#">Sign up</a>
+        </p>
+    </div>
+
+    <script>
+        document.querySelector('.password-toggle').addEventListener('click', function () {
+            const passwordField = document.querySelector('#id_password');
+            const icon = this.querySelector('i');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        });
+    </script>
+</body>
+</html>
