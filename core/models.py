@@ -29,8 +29,8 @@ class Product(models.Model):
     volume_no = models.CharField(max_length=100, null=True, blank=True)
     article_no = models.CharField(max_length=100, null=True, blank=True)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
-    price = models.CharField(max_length=50) # New Price
-    old_price = models.CharField(max_length=50, null=True, blank=True)
+    price = models.CharField(max_length=50, verbose_name='Retail Price')
+    old_price = models.CharField(max_length=50, null=True, blank=True, verbose_name='Old Price')
     discount_percent = models.IntegerField(default=0)
     stock = models.IntegerField(default=0)
     image = models.ImageField(upload_to='products/', null=True, blank=True)

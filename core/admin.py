@@ -36,10 +36,25 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'price', 'badge']
+    list_display = ['name', 'category', 'price', 'wholesale_price', 'badge']
     list_filter = ['category', 'badge']
     search_fields = ['name', 'description']
-    
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('name', 'category', 'article_no', 'volume_no', 'badge', 'description', 'image')
+        }),
+        ('Pricing', {
+            'fields': ('price', 'old_price', 'discount_percent', 'wholesale_price', 'wholesale_package_size'),
+            'description': 'Retail Price = regular selling price. Old Price = crossed-out original price. Wholesale Price = bulk order price.'
+        }),
+        ('Inventory & Links', {
+            'fields': ('stock', 'link')
+        }),
+        ('Variants', {
+            'fields': ('available_colors', 'available_sizes')
+        }),
+    )
+
     change_list_template = "admin/product_change_list.html"
 
     def get_urls(self):

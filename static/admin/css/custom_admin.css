@@ -536,31 +536,43 @@ body.login-page .content {
 
 @media (max-width: 768px) {
     /* Navbar adjustments */
-    .main-header {
-        height: auto !important;
-        min-height: 60px !important;
+    .main-header,
+    .app-header {
+        height: 56px !important;
+        min-height: 56px !important;
+        padding: 0 0.75rem !important;
     }
 
-    .main-header .navbar {
+    .main-header .navbar,
+    .app-header.navbar {
         padding: 0 !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    /* Hide search forms — they use d-flex class in Jazzmin */
+    .app-header form,
+    .app-header form.d-flex,
+    .main-header form {
+        display: none !important;
     }
 
     .navbar-nav {
-        width: 100% !important;
-        justify-content: space-around !important;
-        margin-top: 0.5rem !important;
+        width: auto !important;
+        justify-content: flex-end !important;
+        margin-top: 0 !important;
+        flex-wrap: nowrap !important;
     }
 
     .navbar-nav .nav-link {
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
+        padding: 0.25rem 0.5rem !important;
         font-size: 0.65rem !important;
     }
 
-    /* Hide search on very small screens to save space */
-    .form-inline {
+    /* Hide old form-inline search too */
+    .form-inline,
+    .navbar-search {
         display: none !important;
     }
 
