@@ -37,6 +37,8 @@ class Product(models.Model):
     link = models.URLField(max_length=500, null=True, blank=True)
     badge = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    wholesale_price = models.CharField(max_length=50, null=True, blank=True, help_text="Price per item when bought in wholesale")
+    wholesale_package_size = models.PositiveIntegerField(default=6, help_text="Minimum number of items for wholesale package")
     available_colors = models.ManyToManyField(Color, blank=True)
     available_sizes = models.ManyToManyField(Size, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -62,15 +64,20 @@ class ProductImage(models.Model):
         return f"Gallery for {self.product.name}"
 
 class Order(models.Model):
+    STATUS_CHOICES = (
+        ('Pending', 'Pending'),
+        ('Delivered', 'Delivered'),
+        ('Cancelled', 'Cancelled'),
+    )
     customer_name = models.CharField(max_length=255)
     email = models.EmailField()
     address = models.TextField()
-    total_amount = models.CharField(max_length=50)
+    total_amount = models.DecimalField(max_digits=12, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
-    is_delivered = models.BooleanField(default=False)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
 
     def __str__(self):
-        return f"Order {self.id} by {self.customer_name}"
+        return f"Order {self.id} by {self.customer_name} - {self.status}"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
@@ -112,6 +119,22 @@ class HeroBanner(models.Model):
     def __str__(self):
         return f"[{self.banner_type}] {self.title}"
 
+class TikTokReel(models.Model):
+    video_id = models.CharField(max_length=100, unique=True)
+    video_url = models.URLField(max_length=500)
+    cover_image_url = models.URLField(max_length=1000)
+    title = models.CharField(max_length=255, null=True, blank=True)
+    category = models.CharField(max_length=100, null=True, blank=True)
+    price = models.CharField(max_length=50, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Reel {self.video_id} - {self.title or 'No Title'}"
+
 class SiteSettings(models.Model):
     brand_name = models.CharField(max_length=255, default="Tawakkal")
     logo = models.ImageField(upload_to='settings/', null=True, blank=True)
@@ -123,9 +146,11 @@ class SiteSettings(models.Model):
     # Social Links
     facebook_url = models.URLField(max_length=500, blank=True, null=True)
     instagram_url = models.URLField(max_length=500, blank=True, null=True)
+    tiktok_profile_url = models.URLField(max_length=500, blank=True, null=True, help_text="Enter your TikTok profile URL (e.g., https://www.tiktok.com/@tawakkalstudio)")
     whatsapp_number = models.CharField(max_length=20, blank=True, null=True)
     
     # Operational
+    tiktok_sync_active = models.BooleanField(default=False, help_text="Enable automatic syncing of TikTok reels")
     shipping_fee = models.IntegerField(default=250)
     free_shipping_threshold = models.IntegerField(default=5000)
     tax_percent = models.IntegerField(default=0)

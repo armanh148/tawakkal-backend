@@ -1,10 +1,14 @@
 from rest_framework import viewsets, filters
-from .models import Category, Product, Color, Size, Order, ContactMessage, HeroBanner, SiteSettings
+from .models import Category, Product, Color, Size, Order, ContactMessage, HeroBanner, SiteSettings, TikTokReel
 from .serializers import (
     CategorySerializer, ProductSerializer, ColorSerializer, 
     SizeSerializer, OrderSerializer, ContactMessageSerializer, HeroBannerSerializer,
-    SiteSettingsSerializer
+    SiteSettingsSerializer, TikTokReelSerializer
 )
+
+class TikTokReelViewSet(viewsets.ModelViewSet):
+    queryset = TikTokReel.objects.filter(is_active=True)
+    serializer_class = TikTokReelSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()

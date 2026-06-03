@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from .models import Category, Product, Color, Size, Order, OrderItem, ContactMessage, HeroBanner, SiteSettings
+from .models import Category, Product, Color, Size, Order, OrderItem, ContactMessage, HeroBanner, SiteSettings, TikTokReel
+
+class TikTokReelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TikTokReel
+        fields = '__all__'
 
 class CategorySerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
@@ -56,10 +61,20 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
+    order_items = serializers.JSONField(write_only=True, required=False)
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['id', 'customer_name', 'email', 'address', 'total_amount', 'created_at', 'status', 'items', 'order_items']
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('order_items', [])
+        order = Order.objects.create(**validated_data)
+        for item_data in items_data:
+            product_id = item_data.pop('product')
+            product = Product.objects.get(id=product_id)
+            OrderItem.objects.create(order=order, product=product, **item_data)
+        return order
 
 class ContactMessageSerializer(serializers.ModelSerializer):
     class Meta:

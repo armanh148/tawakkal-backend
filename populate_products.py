@@ -169,7 +169,9 @@ def populate_products():
                 'stock': p['stock'],
                 'badge': p['badge'],
                 'description': p['description'],
-                'image': p['image']
+                'image': p['image'],
+                'wholesale_price': '3850' if int(p['price'].replace(',', '')) > 4000 else str(int(int(p['price'].replace(',', '')) * 0.85)),
+                'wholesale_package_size': 6
             }
         )
         prod.available_colors.set([color_objs[c] for c in p['colors']])
