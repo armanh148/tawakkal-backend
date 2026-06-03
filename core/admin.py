@@ -54,20 +54,6 @@ class HeroBannerAdmin(admin.ModelAdmin):
     list_display = ['title', 'banner_type', 'is_active']
     list_editable = ['is_active']
 
-@admin.register(TikTokReel)
-class TikTokReelAdmin(admin.ModelAdmin):
-    list_display = ['video_id', 'title', 'category', 'price', 'is_active', 'created_at']
-    list_editable = ['is_active', 'category', 'price']
-    actions = ['sync_reels']
-
-    def sync_reels(self, request, queryset):
-        try:
-            call_command('fetch_reels')
-            self.message_user(request, "Successfully synced TikTok reels.", messages.SUCCESS)
-        except Exception as e:
-            self.message_user(request, f"Error syncing reels: {str(e)}", messages.ERROR)
-    sync_reels.short_description = "Sync reels from TikTok"
-
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ['brand_name', 'contact_email', 'contact_phone', 'tiktok_profile_url', 'tiktok_sync_active']
