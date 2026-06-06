@@ -1,87 +1,108 @@
+import re
 import requests
+from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 from core.models import TikTokReel, SiteSettings
 
+HEADERS = {
+    'User-Agent': (
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+        'AppleWebKit/537.36 (KHTML, like Gecko) '
+        'Chrome/120.0.0.0 Safari/537.36'
+    )
+}
+
+
+def get_username(profile_url):
+    match = re.search(r'@([a-zA-Z0-9._-]+)', profile_url)
+    return match.group(1) if match else profile_url.strip('@').strip('/')
+
+
+def fetch_oembed(video_url):
+    """Get thumbnail URL + title from TikTok's free oEmbed endpoint."""
+    try:
+        resp = requests.get(
+            'https://www.tiktok.com/oembed',
+            params={'url': video_url},
+            timeout=15,
+            headers=HEADERS,
+        )
+        if resp.status_code == 200:
+            data = resp.json()
+            return {
+                'thumbnail_url': data.get('thumbnail_url', ''),
+                'title': (data.get('title') or '')[:255],
+            }
+    except Exception:
+        pass
+    return None
+
+
+def download_image(url, filename):
+    """Download image bytes — returns ContentFile or None."""
+    try:
+        resp = requests.get(url, timeout=20, headers=HEADERS)
+        if resp.status_code == 200 and resp.content:
+            return ContentFile(resp.content, name=filename)
+    except Exception:
+        pass
+    return None
+
+
 class Command(BaseCommand):
-    help = 'Fetches latest reels from TikTok'
+    help = (
+        'Refresh TikTok reels in the database.\n'
+        'For each active reel it re-fetches the thumbnail via TikTok oEmbed '
+        'and saves the image locally so it never expires.\n\n'
+        'To ADD new reels go to:\n'
+        '  Admin → TikTok Reels → "Bulk Import from TikTok URLs" button'
+    )
 
     def handle(self, *args, **options):
-        settings = SiteSettings.objects.first()
-        if not settings or not settings.tiktok_profile_url:
-            self.stdout.write(self.style.WARNING('TikTok Profile URL not configured in Site Settings.'))
+        site = SiteSettings.objects.first()
+        if not site or not site.tiktok_sync_active:
+            self.stdout.write(self.style.WARNING(
+                'TikTok sync is disabled or Site Settings not found.\n'
+                'Enable "Tiktok sync active" in Admin → Site Settings.'
+            ))
             return
 
-        if not settings.tiktok_sync_active:
-            self.stdout.write(self.style.WARNING('TikTok sync is currently disabled in Site Settings.'))
+        reels = TikTokReel.objects.filter(is_active=True)
+        if not reels.exists():
+            self.stdout.write(self.style.WARNING(
+                'No active reels found.\n'
+                'Go to Admin → TikTok Reels → "Bulk Import from TikTok URLs" '
+                'and paste your video links there.'
+            ))
             return
 
-        profile_url = settings.tiktok_profile_url
-        # Extract username from URL (e.g., https://www.tiktok.com/@username -> username)
-        import re
-        match = re.search(r'@([a-zA-Z0-9._-]+)', profile_url)
-        username = match.group(1) if match else profile_url
-        
-        self.stdout.write(f'Fetching reels for {profile_url} (Username: {username}) from TikTok...')
-        
-        # 1. Fetch latest reels (simulated for now, can be replaced with real TikTok API/Scraper)
-        # Note: TikTok has strict bot protection, so in production use services like 
-        # TikAPI, Apify TikTok Scraper, or similar official/unofficial APIs.
-        
-        latest_reels = [
-            {
-                'video_id': '7401234567890123458',
-                'video_url': f'https://www.tiktok.com/@{username}/video/7401234567890123458',
-                'cover_image_url': 'https://images.unsplash.com/photo-1560457079-9a6532ccb118?auto=format&fit=crop&q=80&w=600',
-                'title': 'Unstitched Luxury Embroidery',
-                'category': 'UNSTITCHED',
-                'price': 'PKR 8,990'
-            },
-            {
-                'video_id': '7401234567890123457',
-                'video_url': f'https://www.tiktok.com/@{username}/video/7401234567890123457',
-                'cover_image_url': 'https://images.unsplash.com/photo-1599032909756-5dee8c65f47a?auto=format&fit=crop&q=80&w=600',
-                'title': 'Cotton Jacquard Collection',
-                'category': 'RTW',
-                'price': 'PKR 7,290'
-            },
-            {
-                'video_id': '7401234567890123456',
-                'video_url': f'https://www.tiktok.com/@{username}/video/7401234567890123456',
-                'cover_image_url': 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?auto=format&fit=crop&q=80&w=600',
-                'title': 'Royal Velvet Festive 2026',
-                'category': 'LUXE',
-                'price': 'PKR 18,500'
-            }
-        ]
+        self.stdout.write(f'Refreshing thumbnails for {reels.count()} reel(s)...\n')
+        ok, fail = 0, 0
 
-        # 2. Add/Update latest reels and set them to active
-        new_ids = []
-        for reel_data in latest_reels:
-            reel, created = TikTokReel.objects.update_or_create(
-                video_id=reel_data['video_id'],
-                defaults={
-                    'video_url': reel_data['video_url'],
-                    'cover_image_url': reel_data['cover_image_url'],
-                    'title': reel_data['title'],
-                    'category': reel_data['category'],
-                    'price': reel_data['price'],
-                    'is_active': True, # Ensure latest ones are active
-                }
+        for reel in reels:
+            oembed = fetch_oembed(reel.video_url)
+            if not oembed or not oembed['thumbnail_url']:
+                self.stdout.write(self.style.ERROR(f'  FAIL {reel.video_id} — oEmbed returned nothing'))
+                fail += 1
+                continue
+
+            img_file = download_image(
+                oembed['thumbnail_url'],
+                f'{reel.video_id}.jpg',
             )
-            new_ids.append(reel.video_id)
-            if created:
-                self.stdout.write(self.style.SUCCESS(f'Newly added: Reel {reel.video_id}'))
+            if img_file:
+                reel.cover_image.save(f'{reel.video_id}.jpg', img_file, save=False)
+                reel.cover_image_url = oembed['thumbnail_url']
+                if not reel.title and oembed['title']:
+                    reel.title = oembed['title']
+                reel.save()
+                self.stdout.write(self.style.SUCCESS(f'  OK  {reel.video_id}'))
+                ok += 1
             else:
-                self.stdout.write(f'Updated: Reel {reel.video_id}')
+                # Fallback: at least store the CDN URL even without local copy
+                reel.cover_image_url = oembed['thumbnail_url']
+                reel.save()
+                self.stdout.write(f'  ~   {reel.video_id} — URL saved, image download failed')
+                ok += 1
 
-        # 3. AUTO-DEACTIVATE OLD REELS:
-        # Only keep the latest 10 active reels. Deactivate anything else.
-        active_reels = TikTokReel.objects.filter(is_active=True).order_by('-created_at')
-        if active_reels.count() > 10:
-            reels_to_deactivate = active_reels[10:]
-            for r in reels_to_deactivate:
-                r.is_active = False
-                r.save()
-            self.stdout.write(self.style.WARNING(f'Deactivated {len(reels_to_deactivate)} older reels to keep feed fresh.'))
-
-        self.stdout.write(self.style.SUCCESS('TikTok feed is now perfectly synced with your latest content.'))
+        self.stdout.write(self.style.SUCCESS(f'\nDone: {ok} refreshed, {fail} failed.'))

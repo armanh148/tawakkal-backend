@@ -122,7 +122,8 @@ class HeroBanner(models.Model):
 class TikTokReel(models.Model):
     video_id = models.CharField(max_length=100, unique=True)
     video_url = models.URLField(max_length=500)
-    cover_image_url = models.URLField(max_length=1000)
+    cover_image_url = models.URLField(max_length=1000, blank=True)
+    cover_image = models.ImageField(upload_to='tiktok/', null=True, blank=True)
     title = models.CharField(max_length=255, null=True, blank=True)
     category = models.CharField(max_length=100, null=True, blank=True)
     price = models.CharField(max_length=50, null=True, blank=True)
@@ -155,6 +156,9 @@ class SiteSettings(models.Model):
     free_shipping_threshold = models.IntegerField(default=5000)
     tax_percent = models.IntegerField(default=0)
     
+    # TikTok Feed Embed
+    tiktok_embed_code = models.TextField(null=True, blank=True, help_text="Paste your TikTok feed embed code here (e.g. Elfsight, EmbedSocial, etc.)")
+
     # Announcement Bar
     announcement_text = models.CharField(max_length=255, default="Free Shipping on orders above PKR 5,000")
     show_announcement = models.BooleanField(default=True)

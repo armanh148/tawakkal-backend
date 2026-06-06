@@ -2,9 +2,20 @@ from rest_framework import serializers
 from .models import Category, Product, Color, Size, Order, OrderItem, ContactMessage, HeroBanner, SiteSettings, TikTokReel
 
 class TikTokReelSerializer(serializers.ModelSerializer):
+    cover_image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = TikTokReel
         fields = '__all__'
+
+    def get_cover_image_url(self, obj):
+        # Prefer locally downloaded image — never expires
+        if obj.cover_image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.cover_image.url)
+            return obj.cover_image.url
+        return obj.cover_image_url
 
 class CategorySerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
