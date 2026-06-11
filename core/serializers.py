@@ -1,5 +1,19 @@
 from rest_framework import serializers
-from .models import Category, Product, Color, Size, Order, OrderItem, ContactMessage, HeroBanner, SiteSettings, TikTokReel
+from .models import Category, Product, Color, Size, Order, OrderItem, ContactMessage, HeroBanner, SiteSettings, TikTokReel, ProductImage
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image']
+    
+    def get_image(self, obj):
+        if not obj.image:
+            return None
+        request = self.context.get('request')
+        if request:
+            return request.build_absolute_uri(obj.image.url)
+        return obj.image.url
 
 class TikTokReelSerializer(serializers.ModelSerializer):
     cover_image_url = serializers.SerializerMethodField()
@@ -48,6 +62,7 @@ class ProductSerializer(serializers.ModelSerializer):
     category = serializers.SlugRelatedField(slug_field='name', queryset=Category.objects.all())
     available_colors = ColorSerializer(many=True, read_only=True)
     available_sizes = SizeSerializer(many=True, read_only=True)
+    gallery = ProductImageSerializer(many=True, read_only=True)
     image = serializers.SerializerMethodField()
 
     class Meta:
@@ -124,6 +139,8 @@ class HeroBannerSerializer(serializers.ModelSerializer):
 class SiteSettingsSerializer(serializers.ModelSerializer):
     logo = serializers.SerializerMethodField()
     favicon = serializers.SerializerMethodField()
+    about_story_image = serializers.SerializerMethodField()
+    secondary_logo = serializers.SerializerMethodField()
 
     class Meta:
         model = SiteSettings
@@ -145,3 +162,9 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
 
     def get_favicon(self, obj):
         return self._get_image_url(obj.favicon)
+
+    def get_about_story_image(self, obj):
+        return self._get_image_url(obj.about_story_image)
+
+    def get_secondary_logo(self, obj):
+        return self._get_image_url(obj.secondary_logo)

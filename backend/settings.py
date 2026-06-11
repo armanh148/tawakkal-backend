@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-q7y2^*2uy0=u7zl@%u^f7qyk^i-ti-k$z9ruw0=m+r9p_snuay
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -62,7 +62,7 @@ JAZZMIN_SETTINGS = {
         {"name": "Settings", "url": "admin:core_sitesettings_changelist"},
         {"name": "Orders", "url": "admin:core_order_changelist"},
         {"name": "Staff", "url": "admin:auth_user_changelist"},
-        {"name": "Live Website", "url": "http://localhost:5173", "new_window": True},
+        {"name": "Live Website", "url": "/", "new_window": True},
     ],
     "show_sidebar": True,
     "navigation_expanded": False,

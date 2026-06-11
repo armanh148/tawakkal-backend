@@ -1,3 +1,4 @@
+import re
 from django.db import models
 
 class Category(models.Model):
@@ -51,6 +52,22 @@ class Product(models.Model):
                 self.article_no = f"TW-{(last_id + 1):04d}"
             else:
                 self.article_no = "TW-0001"
+        
+        # Auto-calculate discount percentage
+        if self.price and self.old_price:
+            try:
+                # Remove non-numeric characters like commas, PKR, etc.
+                price_val = float(re.sub(r'[^\d.]', '', str(self.price)))
+                old_price_val = float(re.sub(r'[^\d.]', '', str(self.old_price)))
+                
+                if old_price_val > price_val:
+                    discount = ((old_price_val - price_val) / old_price_val) * 100
+                    self.discount_percent = int(round(discount))
+                else:
+                    self.discount_percent = 0
+            except (ValueError, ZeroDivisionError):
+                pass
+                
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -138,7 +155,8 @@ class TikTokReel(models.Model):
 
 class SiteSettings(models.Model):
     brand_name = models.CharField(max_length=255, default="Tawakkal")
-    logo = models.ImageField(upload_to='settings/', null=True, blank=True)
+    logo = models.ImageField(upload_to='settings/', null=True, blank=True, help_text="Primary logo (for light backgrounds)")
+    secondary_logo = models.ImageField(upload_to='settings/', null=True, blank=True, help_text="Secondary logo (for sticky mode and dark hero pages)")
     favicon = models.ImageField(upload_to='settings/', null=True, blank=True)
     contact_email = models.EmailField(default="info@tawakkal.com")
     contact_phone = models.CharField(max_length=20, default="+92 300 1234567")
@@ -158,6 +176,9 @@ class SiteSettings(models.Model):
     
     # TikTok Feed Embed
     tiktok_embed_code = models.TextField(null=True, blank=True, help_text="Paste your TikTok feed embed code here (e.g. Elfsight, EmbedSocial, etc.)")
+
+    # Story Section Image
+    about_story_image = models.ImageField(upload_to='settings/', null=True, blank=True, help_text="Image for the 'Our Story' section on the homepage")
 
     # Announcement Bar
     announcement_text = models.CharField(max_length=255, default="Free Shipping on orders above PKR 5,000")

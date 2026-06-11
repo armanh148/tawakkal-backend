@@ -3,8 +3,12 @@ import requests
 from django.contrib import admin
 from django.urls import path, reverse
 from django.shortcuts import render, redirect
-from .models import Category, Product, Color, Size, Order, OrderItem, ContactMessage, HeroBanner, SiteSettings, TikTokReel
+from .models import Category, Product, Color, Size, Order, OrderItem, ContactMessage, HeroBanner, SiteSettings, TikTokReel, ProductImage
 from .admin_views import smart_add_product
+
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1
 from django.core.management import call_command
 from django.contrib import messages
 
@@ -67,6 +71,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'price', 'wholesale_price', 'badge']
     list_filter = ['category', 'badge']
     search_fields = ['name', 'description']
+    inlines = [ProductImageInline]
     fieldsets = (
         ('Basic Information', {
             'fields': ('name', 'category', 'article_no', 'volume_no', 'badge', 'description', 'image')
@@ -102,7 +107,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ['brand_name', 'contact_email', 'contact_phone', 'tiktok_profile_url', 'tiktok_sync_active']
     fieldsets = (
         ('General Information', {
-            'fields': ('brand_name', 'logo', 'favicon', 'address')
+            'fields': ('brand_name', 'logo', 'secondary_logo', 'favicon', 'about_story_image', 'address')
         }),
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone', 'whatsapp_number')
